@@ -1,0 +1,108 @@
+{
+  "template": "minecraft:pale_oak_door",
+  "components": {
+    "minecraft:cooking_fuel": {
+      "burn_time": 300,
+      "speed_multiplier": "minecraft:cooking/speed_default"
+    }
+  },
+  "shapes": {
+    "properties": [
+      "facing"
+    ],
+    "values": {
+      "north": [
+        [
+          0.0,
+          0.0,
+          0.81125,
+          1.0,
+          0.99875,
+          0.99875
+        ]
+      ],
+      "south": [
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.99875,
+          0.18625
+        ]
+      ],
+      "east": [
+        [
+          0.00125,
+          0.0,
+          0.0,
+          0.1875,
+          0.99875,
+          1.0
+        ]
+      ],
+      "west": [
+        [
+          0.81375,
+          0.0,
+          0.0,
+          1.0,
+          0.99875,
+          1.0
+        ]
+      ]
+    }
+  },
+  "collision_shapes": {
+    "properties": [
+      "facing",
+      "open"
+    ],
+    "values": {
+      "north,false": [
+        [
+          0.0,
+          0.0,
+          0.81125,
+          1.0,
+          0.99875,
+          0.99875
+        ]
+      ],
+      "south,false": [
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.99875,
+          0.18625
+        ]
+      ],
+      "east,false": [
+        [
+          0.00125,
+          0.0,
+          0.0,
+          0.1875,
+          0.99875,
+          1.0
+        ]
+      ],
+      "west,false": [
+        [
+          0.81375,
+          0.0,
+          0.0,
+          1.0,
+          0.99875,
+          1.0
+        ]
+      ],
+      "north,true": [],
+      "south,true": [],
+      "east,true": [],
+      "west,true": []
+    }
+  }
+}

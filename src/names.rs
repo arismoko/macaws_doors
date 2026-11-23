@@ -1,7 +1,7 @@
 //! The blocks each rule is attached to, as the original's `BlockInit` registers them.
 
 /// `JapaneseDoors` and `StableDoor` blocks a hand can open: they play the shoji sound.
-pub const SHOJI: [&str; 44] = [
+pub const SHOJI: [&str; 52] = [
     "acacia_japanese2_door",
     "acacia_japanese_door",
     "acacia_stable_door",
@@ -38,6 +38,14 @@ pub const SHOJI: [&str; 44] = [
     "oak_japanese_door",
     "oak_stable_door",
     "oak_stable_head_door",
+    "pale_oak_japanese2_door",
+    "pale_oak_japanese_door",
+    "pale_oak_stable_door",
+    "pale_oak_stable_head_door",
+    "poplar_japanese2_door",
+    "poplar_japanese_door",
+    "poplar_stable_door",
+    "poplar_stable_head_door",
     "spruce_japanese2_door",
     "spruce_japanese_door",
     "spruce_stable_door",
