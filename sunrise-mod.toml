@@ -1,9 +1,9 @@
 # Macaw's Doors for Sunrise: content only (data/ and assets/), no code.
 id = "mcwdoors"
 name = "Macaw's Doors"
-version = "0.2.2"
+version = "0.2.3"
 description = "239 doors in every wood and in glass, metal and themed styles, with door prints."
-authors = ["Sketch Macaw", "Peachy Macaw"]
+authors = ["Sketch Macaw", "Peachy Macaw", "arismoko"]
 license = "MIT"
 credits = "Ported to Minecraft 26.3 by AdLf0208, and to Sunrise by arismoko."
 homepage = "https://github.com/arismoko/macaws_doors"
