@@ -1,61 +1,34 @@
-# Macaw's Doors — a Horizon port
+# Macaw's Doors for Sunrise
 
-**Macaw's Doors** is a Minecraft mod. Source code for Macaw's Doors. This repository is a **port of it to [Horizon](https://github.com/horizon-rust/horizon)**, the Rust engine for Minecraft Java 26.3. It carries the complete source of the port plus the content files it ships, and installs as a single `.hmod` package.
+239 doors in every wood and in glass, metal and themed styles, with door prints.
 
-Upstream: [sketchmacaw/MacawsDoors](https://github.com/sketchmacaw/MacawsDoors) — licence **MIT**.
+A port of [Macaw's Doors](https://github.com/sketchmacaw/MacawsDoors) by Sketch Macaw and Peachy Macaw to [Sunrise](https://playsunrise.net) (Minecraft Java 26.3), as a content mod: the original's doors, models, textures, recipes and strings, with no code.
 
-| | |
-|---|---|
-| Upstream mod | Macaw's Doors ([source](https://github.com/sketchmacaw/MacawsDoors)) |
-| Ported to | Horizon 0b14f8a, Minecraft Java 26.3, mod API `0.2` |
-| Package | `mcwdoors.hmod` (install it with the Horizon launcher) |
-| Licence | **MIT** — the upstream mod's licence; see [Licence and credit](#licence-and-credit) |
+## What it does
 
-## What this port implements
+- 239 doors: barn, beach, cottage, classic, four-panel, glass, mystic, nether, paper, stable, swamp, tropical, waffle, western and more, in every wood.
+- Metal, jail, store and sliding glass doors that open only with redstone, like iron doors.
+- The 12 door prints used to craft them, the recipes, drops and creative tab.
 
-- 239 Macaw's doors on vanilla templates, with the 12 door-print items.
+## Differences from the original
 
-## Not yet ported
+- Garage doors and portcullises are not ported (they are Java blocks with no vanilla counterpart).
+- Japanese and stable doors open as plain doors, not with their own two-part behaviour.
+- Wooden doors burn as fuel for vanilla's door time, not the original's.
 
-- **Template numbers.** No NeoForge oracle here, so per-block hardness, blast
-- **`JapaneseDoors` / `StableDoor` behaviour is not carried.** The content
-- **Garage doors and portcullises** are not carried at all (gap 1 above): no
-- **Door prints** are plain items with the `stick` template; upstream adds a
-- **Fuel burn time** is the vanilla door's 200 ticks, not upstream's
-- **`cherry_waffle_door`** is absent (incomplete assets upstream; see above);
-- **Creative tab.** Upstream's `TabInit` is Java; since a data-tier port has no
-- **Tags naming left-out ids.** `data/minecraft/tags/block/mineable/axe.json`
+## Building
 
-## Installing
+With the Sunrise mod tool (`cargo sunrise-mod`, from the Sunrise SDK):
 
-1. Install the [Horizon launcher](https://github.com/horizon-rust/horizon/releases) (0.2.70 or newer).
-2. Add `mcwdoors.hmod` to the instance's mods.
-3. The package is pinned to a specific Horizon build; the launcher checks that pin.
-
-## Licence and credit
-
-Macaw's Doors was created by its upstream authors; the code, models and assets in the original mod
-remain theirs and are used here under **MIT**. The Rust in this repository is a clean-room
-rewrite for Horizon, not a translation of the original source.
-
-- `LICENSE` — the upstream licence text.
-- `LICENSE-NOTICE.md` — what this port carries and where it came from.
-- The upstream project: https://github.com/sketchmacaw/MacawsDoors
-
-## Technical details
-
-```
-horizon-mod.toml   package manifest (id, version, api, [native] pin)
-Cargo.toml         the crate; depends on `horizon-mod-api` from the fetched SDK
-src/               lib.rs (the one `impl Hooks`), runtime.rs (pure logic + tests), glue
-assets/ data/      the content the package ships
-tools/             content generators and the e2e scenario
+```sh
+cargo sunrise-mod check
+cargo sunrise-mod build    # target/sunrise-mod/mcwdoors.smod
 ```
 
-- Build: `cargo horizon-mod build` (packages; it does not compile against the game).
-- Test: `cargo test`, `cargo clippy --all-targets -- -D warnings`.
-- In-game: `ports/tools/launcher-game.sh run mcwdoors` in the campaign tree, or install the
-  `.hmod` and play; the harness scenario is `tools/e2e.sh`.
+This version is made for the Sunrise Dev build `dev-2026-11-22-7cfdf81`.
 
-This repository is generated from the campaign's port at `ports/mcwdoors/`; the port's own
-`notes.md` is the full record (decisions, traps, evidence).
+## Licence and credits
+
+Macaw's Doors is by Sketch Macaw and Peachy Macaw (https://github.com/sketchmacaw/MacawsDoors). Its textures, models, recipes and strings are Sketch Macaw and Peachy Macaw's and are used here under the **MIT licence**, the original's; `LICENSE` holds the text and its copyright notice, and `LICENSE-NOTICE.md` says what this port carries.
+
+Carried to Minecraft 26.3 by AdLf0208 ([AdLf0208/macaws_doors](https://github.com/AdLf0208/macaws_doors)), and ported to Sunrise by arismoko. This port is distributed under the same licence.

@@ -1,0 +1,23 @@
+summary = "239 doors in every wood and in glass, metal and themed styles, with door prints."
+description = """
+239 doors in every wood and in glass, metal and themed styles, with door prints.
+
+A port of [Macaw's Doors](https://github.com/sketchmacaw/MacawsDoors) by Sketch Macaw and Peachy Macaw to [Sunrise](https://playsunrise.net) (Minecraft Java 26.3), as a content mod: the original's doors, models, textures, recipes and strings, with no code.
+
+What it does:
+
+- 239 doors: barn, beach, cottage, classic, four-panel, glass, mystic, nether, paper, stable, swamp, tropical, waffle, western and more, in every wood.
+- Metal, jail, store and sliding glass doors that open only with redstone, like iron doors.
+- The 12 door prints used to craft them, the recipes, drops and creative tab.
+
+Differences from the original:
+
+- Garage doors and portcullises are not ported (they are Java blocks with no vanilla counterpart).
+- Japanese and stable doors open as plain doors, not with their own two-part behaviour.
+- Wooden doors burn as fuel for vanilla's door time, not the original's.
+"""
+categories = ["decoration"]
+
+[[screenshots]]
+path = "page/world.png"
+caption = "A row of Macaw's doors."
