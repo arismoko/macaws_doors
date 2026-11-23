@@ -1,0 +1,10 @@
+[package]
+name = "mcwdoors"
+version = "0.2.3"
+edition = "2024"
+license = "MIT"
+description = "Macaw's Doors for Sunrise: garage doors and portcullises, shoji sounds"
+
+[dependencies]
+# The pinned SDK's API crate, fetched into .sunrise/sdk/ by any `cargo sunrise-mod` command.
+sunrise-mod-api = { path = ".sunrise/sdk/api/crates/sunrise-mod-api" }

@@ -8,6 +8,11 @@
     "mcwdoors:metal_windowed_door",
     "mcwdoors:jail_door",
     "mcwdoors:store_door",
-    "mcwdoors:sliding_glass_door"
+    "mcwdoors:sliding_glass_door",
+    "mcwdoors:garage_white_door",
+    "mcwdoors:garage_silver_door",
+    "mcwdoors:garage_gray_door",
+    "mcwdoors:garage_black_door",
+    "mcwdoors:iron_portcullis"
   ]
 }

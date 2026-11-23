@@ -252,6 +252,12 @@
     "mcwdoors:warped_tropical_door",
     "mcwdoors:warped_waffle_door",
     "mcwdoors:warped_western_door",
-    "mcwdoors:warped_whispering_door"
+    "mcwdoors:warped_whispering_door",
+    "mcwdoors:garage_white_door",
+    "mcwdoors:garage_silver_door",
+    "mcwdoors:garage_gray_door",
+    "mcwdoors:garage_black_door",
+    "mcwdoors:iron_portcullis",
+    "mcwdoors:wooden_portcullis"
   ]
 }

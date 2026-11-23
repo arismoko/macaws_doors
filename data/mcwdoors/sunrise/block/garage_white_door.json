@@ -1,0 +1,144 @@
+{
+  "template": "minecraft:stone",
+  "properties": {
+    "hardness": 3.0,
+    "explosion_resistance": 5.0,
+    "requires_tool": false,
+    "map_color": 6,
+    "sounds": "minecraft:iron_block",
+    "occludes": false
+  },
+  "shapes": {
+    "properties": [
+      "facing"
+    ],
+    "values": {
+      "north": [
+        [
+          0.375,
+          0.0,
+          0.0,
+          0.625,
+          1.0,
+          1.0
+        ]
+      ],
+      "south": [
+        [
+          0.375,
+          0.0,
+          0.0,
+          0.625,
+          1.0,
+          1.0
+        ]
+      ],
+      "east": [
+        [
+          0.0,
+          0.0,
+          0.375,
+          1.0,
+          1.0,
+          0.625
+        ]
+      ],
+      "west": [
+        [
+          0.0,
+          0.0,
+          0.375,
+          1.0,
+          1.0,
+          0.625
+        ]
+      ]
+    }
+  },
+  "collision_shapes": {
+    "properties": [
+      "facing"
+    ],
+    "values": {
+      "north": [
+        [
+          0.375,
+          0.0,
+          0.0,
+          0.625,
+          1.0,
+          1.0
+        ]
+      ],
+      "south": [
+        [
+          0.375,
+          0.0,
+          0.0,
+          0.625,
+          1.0,
+          1.0
+        ]
+      ],
+      "east": [
+        [
+          0.0,
+          0.0,
+          0.375,
+          1.0,
+          1.0,
+          0.625
+        ]
+      ],
+      "west": [
+        [
+          0.0,
+          0.0,
+          0.375,
+          1.0,
+          1.0,
+          0.625
+        ]
+      ]
+    }
+  },
+  "state_properties": {
+    "facing": {
+      "type": "enum",
+      "values": [
+        "north",
+        "east",
+        "south",
+        "west"
+      ]
+    },
+    "open": {
+      "type": "boolean"
+    },
+    "powered": {
+      "type": "boolean"
+    },
+    "part": {
+      "type": "enum",
+      "values": [
+        "top",
+        "middle"
+      ]
+    }
+  },
+  "default_state": {
+    "facing": "north",
+    "open": "true",
+    "powered": "false",
+    "part": "top"
+  },
+  "components": {
+    "minecraft:lore": [
+      {
+        "translate": "mcwdoors.garage.desc",
+        "color": "gray",
+        "italic": false
+      }
+    ]
+  }
+}

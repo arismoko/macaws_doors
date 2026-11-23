@@ -1,3 +1,111 @@
 {
-  "template": "minecraft:iron_door"
+  "template": "minecraft:iron_door",
+  "shapes": {
+    "properties": [
+      "facing"
+    ],
+    "values": {
+      "north": [
+        [
+          0.0,
+          0.0,
+          0.4375,
+          1.0,
+          1.0,
+          0.5625
+        ]
+      ],
+      "south": [
+        [
+          0.0,
+          0.0,
+          0.4375,
+          1.0,
+          1.0,
+          0.5625
+        ]
+      ],
+      "east": [
+        [
+          0.4375,
+          0.0,
+          0.0,
+          0.5625,
+          1.0,
+          1.0
+        ]
+      ],
+      "west": [
+        [
+          0.4375,
+          0.0,
+          0.0,
+          0.5625,
+          1.0,
+          1.0
+        ]
+      ]
+    }
+  },
+  "collision_shapes": {
+    "properties": [
+      "facing",
+      "open"
+    ],
+    "values": {
+      "north,false": [
+        [
+          0.0,
+          0.0,
+          0.4375,
+          1.0,
+          1.0,
+          0.5625
+        ]
+      ],
+      "south,false": [
+        [
+          0.0,
+          0.0,
+          0.4375,
+          1.0,
+          1.0,
+          0.5625
+        ]
+      ],
+      "east,false": [
+        [
+          0.4375,
+          0.0,
+          0.0,
+          0.5625,
+          1.0,
+          1.0
+        ]
+      ],
+      "west,false": [
+        [
+          0.4375,
+          0.0,
+          0.0,
+          0.5625,
+          1.0,
+          1.0
+        ]
+      ],
+      "north,true": [],
+      "south,true": [],
+      "east,true": [],
+      "west,true": []
+    }
+  },
+  "components": {
+    "minecraft:lore": [
+      {
+        "translate": "mcwdoors.metaldoor.desc",
+        "color": "gray",
+        "italic": false
+      }
+    ]
+  }
 }

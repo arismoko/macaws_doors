@@ -1,3 +1,12 @@
 {
-  "template": "minecraft:iron_door"
+  "template": "minecraft:iron_door",
+  "components": {
+    "minecraft:lore": [
+      {
+        "translate": "mcwdoors.metaldoor.desc",
+        "color": "gray",
+        "italic": false
+      }
+    ]
+  }
 }

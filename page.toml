@@ -2,18 +2,22 @@ summary = "239 doors in every wood and in glass, metal and themed styles, with d
 description = """
 239 doors in every wood and in glass, metal and themed styles, with door prints.
 
-A port of [Macaw's Doors](https://github.com/sketchmacaw/MacawsDoors) by Sketch Macaw and Peachy Macaw to [Sunrise](https://playsunrise.net) (Minecraft Java 26.3), as a content mod: the original's doors, models, textures, recipes and strings, with no code.
+A port of [Macaw's Doors](https://github.com/sketchmacaw/MacawsDoors) by Sketch Macaw and Peachy Macaw to [Sunrise](https://playsunrise.net) (Minecraft Java 26.3), as a content mod with a native part: the original's doors, models, textures, recipes and strings, plus its garage doors and portcullises.
 
 What it does:
 
 - 239 doors: barn, beach, cottage, classic, four-panel, glass, mystic, nether, paper, stable, swamp, tropical, waffle, western and more, in every wood.
 - Metal, jail, store and sliding glass doors that open only with redstone, like iron doors.
-- The 12 door prints used to craft them, the recipes, drops and creative tab.
+- Four garage doors and two portcullises: place one on the ceiling and click it to roll it down to the floor; click again to roll it up. Doors of the same kind side by side move together, and redstone power opens and closes them. Breaking the top piece gives the item back.
+- Japanese and stable doors keep their thin shapes, let you through when open and open by hand with the shoji sound.
+- The 12 door prints say "Crafting ingredient" and burn for 300 ticks; the metal doors, garage doors and portcullises carry the original's tooltips.
+- The recipes, drops and creative tab.
 
 Differences from the original:
 
-- Garage doors and portcullises are not ported (they are Java blocks with no vanilla counterpart).
-- Japanese and stable doors open as plain doors, not with their own two-part behaviour.
+- Redstone power moves a garage door one tick late, and a Japanese or stable door opened by redstone or an explosion plays the ordinary door sound, not the shoji one.
+- The stable doors' shapes are trimmed to the block's edge (the original overhangs by 0.02 of a pixel).
+- Garage doors and portcullises are not blocked for mobs' pathfinding.
 """
 categories = ["decoration"]
 
