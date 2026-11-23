@@ -14,7 +14,6 @@ A port of [Macaw's Doors](https://github.com/sketchmacaw/MacawsDoors) by Sketch 
 
 - Garage doors and portcullises are not ported (they are Java blocks with no vanilla counterpart).
 - Japanese and stable doors open as plain doors, not with their own two-part behaviour.
-- Wooden doors burn as fuel for vanilla's door time, not the original's.
 
 ## Building
 
