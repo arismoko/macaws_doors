@@ -7,11 +7,11 @@
       "entries": [
         {
           "condition": {
-            "block": "mcwdoors:jungle_paper_door",
-            "properties": {
+            "type": "minecraft:match_block",
+            "blocks": "mcwdoors:jungle_paper_door",
+            "state": {
               "half": "lower"
-            },
-            "type": "minecraft:block_state_property"
+            }
           },
           "name": "mcwdoors:jungle_paper_door",
           "type": "minecraft:item"

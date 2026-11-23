@@ -7,11 +7,11 @@
       "entries": [
         {
           "condition": {
-            "block": "mcwdoors:metal_windowed_door",
-            "properties": {
+            "type": "minecraft:match_block",
+            "blocks": "mcwdoors:metal_windowed_door",
+            "state": {
               "half": "lower"
-            },
-            "type": "minecraft:block_state_property"
+            }
           },
           "name": "mcwdoors:metal_windowed_door",
           "type": "minecraft:item"

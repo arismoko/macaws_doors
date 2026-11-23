@@ -7,11 +7,11 @@
       "entries": [
         {
           "condition": {
-            "block": "mcwdoors:crimson_mystic_door",
-            "properties": {
+            "type": "minecraft:match_block",
+            "blocks": "mcwdoors:crimson_mystic_door",
+            "state": {
               "half": "lower"
-            },
-            "type": "minecraft:block_state_property"
+            }
           },
           "name": "mcwdoors:crimson_mystic_door",
           "type": "minecraft:item"

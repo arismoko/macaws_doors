@@ -7,11 +7,11 @@
       "entries": [
         {
           "condition": {
-            "block": "mcwdoors:birch_barn_glass_door",
-            "properties": {
+            "type": "minecraft:match_block",
+            "blocks": "mcwdoors:birch_barn_glass_door",
+            "state": {
               "half": "lower"
-            },
-            "type": "minecraft:block_state_property"
+            }
           },
           "name": "mcwdoors:birch_barn_glass_door",
           "type": "minecraft:item"

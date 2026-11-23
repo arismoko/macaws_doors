@@ -7,11 +7,11 @@
       "entries": [
         {
           "condition": {
-            "block": "mcwdoors:mangrove_cottage_door",
-            "properties": {
+            "type": "minecraft:match_block",
+            "blocks": "mcwdoors:mangrove_cottage_door",
+            "state": {
               "half": "lower"
-            },
-            "type": "minecraft:block_state_property"
+            }
           },
           "name": "mcwdoors:mangrove_cottage_door",
           "type": "minecraft:item"

@@ -7,11 +7,11 @@
       "entries": [
         {
           "condition": {
-            "block": "mcwdoors:cherry_barn_door",
-            "properties": {
+            "type": "minecraft:match_block",
+            "blocks": "mcwdoors:cherry_barn_door",
+            "state": {
               "half": "lower"
-            },
-            "type": "minecraft:block_state_property"
+            }
           },
           "name": "mcwdoors:cherry_barn_door",
           "type": "minecraft:item"

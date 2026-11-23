@@ -7,11 +7,11 @@
       "entries": [
         {
           "condition": {
-            "block": "mcwdoors:warped_bamboo_door",
-            "properties": {
+            "type": "minecraft:match_block",
+            "blocks": "mcwdoors:warped_bamboo_door",
+            "state": {
               "half": "lower"
-            },
-            "type": "minecraft:block_state_property"
+            }
           },
           "name": "mcwdoors:warped_bamboo_door",
           "type": "minecraft:item"

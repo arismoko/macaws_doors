@@ -7,11 +7,11 @@
       "entries": [
         {
           "condition": {
-            "block": "mcwdoors:warped_beach_door",
-            "properties": {
+            "type": "minecraft:match_block",
+            "blocks": "mcwdoors:warped_beach_door",
+            "state": {
               "half": "lower"
-            },
-            "type": "minecraft:block_state_property"
+            }
           },
           "name": "mcwdoors:warped_beach_door",
           "type": "minecraft:item"

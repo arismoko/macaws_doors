@@ -7,11 +7,11 @@
       "entries": [
         {
           "condition": {
-            "block": "mcwdoors:store_door",
-            "properties": {
+            "type": "minecraft:match_block",
+            "blocks": "mcwdoors:store_door",
+            "state": {
               "half": "lower"
-            },
-            "type": "minecraft:block_state_property"
+            }
           },
           "name": "mcwdoors:store_door",
           "type": "minecraft:item"

@@ -7,11 +7,11 @@
       "entries": [
         {
           "condition": {
-            "block": "mcwdoors:dark_oak_bamboo_door",
-            "properties": {
+            "type": "minecraft:match_block",
+            "blocks": "mcwdoors:dark_oak_bamboo_door",
+            "state": {
               "half": "lower"
-            },
-            "type": "minecraft:block_state_property"
+            }
           },
           "name": "mcwdoors:dark_oak_bamboo_door",
           "type": "minecraft:item"

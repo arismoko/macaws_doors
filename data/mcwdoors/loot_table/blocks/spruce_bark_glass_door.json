@@ -7,11 +7,11 @@
       "entries": [
         {
           "condition": {
-            "block": "mcwdoors:spruce_bark_glass_door",
-            "properties": {
+            "type": "minecraft:match_block",
+            "blocks": "mcwdoors:spruce_bark_glass_door",
+            "state": {
               "half": "lower"
-            },
-            "type": "minecraft:block_state_property"
+            }
           },
           "name": "mcwdoors:spruce_bark_glass_door",
           "type": "minecraft:item"

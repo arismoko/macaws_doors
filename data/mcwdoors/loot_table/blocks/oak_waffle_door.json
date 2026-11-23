@@ -7,11 +7,11 @@
       "entries": [
         {
           "condition": {
-            "block": "mcwdoors:oak_waffle_door",
-            "properties": {
+            "type": "minecraft:match_block",
+            "blocks": "mcwdoors:oak_waffle_door",
+            "state": {
               "half": "lower"
-            },
-            "type": "minecraft:block_state_property"
+            }
           },
           "name": "mcwdoors:oak_waffle_door",
           "type": "minecraft:item"
