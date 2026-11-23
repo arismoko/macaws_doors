@@ -125,14 +125,16 @@ impl Garage {
 impl BlockPart for Garage {
     fn use_item_on(
         &self,
-        host: &mut dyn ServerHost,
+        _host: &mut dyn ServerHost,
         event: &mut UseItemOnEvent<'_>,
     ) -> Option<InteractionResult> {
         let click = event.click;
         if click.stack.is_some_and(|s| s.item() == self.item) {
             return Some(InteractionResult::Pass);
         }
-        Self::click(host, click)
+        // Any other item tries the empty hand, which runs for the main hand only, so a click that
+        // reaches the server for both hands moves the door once.
+        Some(InteractionResult::TryWithEmptyHand)
     }
 
     fn use_without_item(
