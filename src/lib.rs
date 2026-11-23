@@ -148,7 +148,7 @@ impl BlockPart for Garage {
     /// `GarageDoor.neighborChanged`: remember the door for this tick's redstone pass.
     fn neighbor_changed(
         &self,
-        _level: &mut dyn mod_api::LevelTicksHost,
+        _level: &mut dyn mod_api::LevelWriteHost,
         event: &mut NeighborChangedEvent,
     ) {
         enqueue(
@@ -166,9 +166,21 @@ impl BlockPart for Garage {
     ) -> Option<Option<mod_api::BlockState>> {
         let (LevelSide::Server(level) | LevelSide::Client(level)) = level;
         let block = level.state_block(event.state)?;
+        let facing = match event.context.source {
+            mod_api::PlacementSource::Player { yaw, .. } => garage::placed_facing(yaw),
+            // A quarter clockwise from `DirectionalPlaceContext.getHorizontalDirection`: its own
+            // direction, north when it is vertical.
+            mod_api::PlacementSource::Directional { direction } => match direction {
+                mod_api::Direction::East => "south",
+                mod_api::Direction::South => "west",
+                mod_api::Direction::West => "north",
+                _ => "east",
+            },
+            _ => return None,
+        };
         let seg = Seg {
             block: block.to_owned(),
-            facing: garage::placed_facing(event.context.yaw).to_owned(),
+            facing: facing.to_owned(),
             open: true,
             powered: false,
             part: garage::Part::Top,
