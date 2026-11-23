@@ -19,5 +19,9 @@ Differences from the original:
 categories = ["decoration"]
 
 [[screenshots]]
-path = "page/world.png"
-caption = "A row of Macaw's doors."
+path = "page/display.png"
+caption = "Ten door styles, some opened, and a metal door opened by a lever."
+
+[[screenshots]]
+path = "page/creative-tab.png"
+caption = "The creative tab."
