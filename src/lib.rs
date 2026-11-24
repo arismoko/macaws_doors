@@ -181,11 +181,11 @@ impl BlockPart for Garage {
     }
 
     /// `GarageDoor.neighborChanged`: power at the segment or the block below it opens the door,
-    /// losing it closes the door, and then the segment is written back as it was before with the
-    /// new `powered`, as the original writes it. No sound.
+    /// losing it closes the door, and then the segment, as the move left it, keeps the new
+    /// `powered`. A segment the move removed stays removed. No sound.
     fn neighbor_changed(&self, level: &mut dyn LevelWriteHost, event: &mut NeighborChangedEvent) {
         let pos = [event.pos.x, event.pos.y, event.pos.z];
-        let Some(mut seg) = level.state_string(event.state).and_then(|t| Seg::parse(&t)) else {
+        let Some(seg) = level.state_string(event.state).and_then(|t| Seg::parse(&t)) else {
             return;
         };
         let signal = |at: [i32; 3]| level.has_neighbor_signal(at).unwrap_or(false);
@@ -199,8 +199,14 @@ impl BlockPart for Garage {
             powered,
             &seg.facing,
         );
-        seg.powered = powered;
-        if let Some(id) = level.block_state_id(&seg.text()) {
+        let Cell::Garage(mut now) = Writer { level: &mut *level }.at(pos) else {
+            return;
+        };
+        if now.block != seg.block {
+            return;
+        }
+        now.powered = powered;
+        if let Some(id) = level.block_state_id(&now.text()) {
             level.set_block(
                 pos,
                 id,
