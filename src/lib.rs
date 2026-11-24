@@ -6,8 +6,8 @@
 //! |---|---|---|
 //! | `register` | [`declare`] | attaches the parts |
 //! | `use_item_on`, `use_without_item` | [`Garage`] | opens or closes the whole door |
-//! | `neighbor_changed` | [`Garage`] | queues a door whose neighbour changed |
-//! | `level_tick_post` | this module | redstone opens or closes each queued door |
+//! | `neighbor_changed` | [`Garage`] | redstone opens or closes the door |
+//! | `is_pathfindable` | [`Garage`] | no path goes through a door |
 //! | `state_for_placement` | [`Garage`] | a quarter clockwise from the placer |
 //! | `on_destroyed_by_player` | [`Garage`] | the top segment drops the item |
 //! | `use_without_item` | [`Shoji`] | a hand opens a Japanese or stable door with its own sound |
@@ -15,14 +15,12 @@
 pub mod garage;
 pub mod names;
 
-use std::collections::{BTreeMap, BTreeSet};
-use std::sync::{Mutex, MutexGuard};
-
 use garage::{Cell, Seg, World};
 use mod_api::{
-    self, BlockPart, BlockUpdateFlags, Hooks, HostSide, InteractionResult, ItemKey, ItemStack,
-    LevelRef, LevelSide, LevelTickPostEvent, NeighborChangedEvent, OnDestroyedByPlayerEvent,
-    Registrar, RegistrationContext, ServerHost, SoundSource, UseItemOnEvent, UseWithoutItemEvent,
+    self, BlockPart, BlockUpdateFlags, Hooks, Host, InteractionResult, IsPathfindableEvent,
+    ItemKey, ItemStack, LevelRef, LevelSide, LevelWriteHost, NeighborChangedEvent,
+    OnDestroyedByPlayerEvent, Registrar, RegistrationContext, ServerHost, SoundSource,
+    UseItemOnEvent, UseWithoutItemEvent,
 };
 
 const MOD: &str = "mcwdoors";
@@ -30,6 +28,57 @@ const MOD: &str = "mcwdoors";
 /// `SoundsInit.GARAGE`, `SoundsInit.SHOJI`.
 const GARAGE_SOUND: &str = "mcwdoors:block.garage";
 const SHOJI_SOUND: &str = "mcwdoors:block.shoji";
+
+/// Whether a state string is one of the airs (`BlockState.isAir`).
+fn is_air(text: &str) -> bool {
+    matches!(
+        text,
+        "minecraft:air" | "minecraft:cave_air" | "minecraft:void_air"
+    )
+}
+
+/// What a state string is to the door rules.
+fn cell(text: &str) -> Cell {
+    if is_air(text) {
+        return Cell::Air;
+    }
+    Seg::parse(text)
+        .filter(|s| s.block.starts_with("mcwdoors:"))
+        .map_or(Cell::Other, Cell::Garage)
+}
+
+/// The text a cell writes, or None for a cell the rules never write.
+fn cell_text(cell: Cell) -> Option<String> {
+    match cell {
+        Cell::Air => Some("minecraft:air".to_owned()),
+        Cell::Garage(seg) => Some(seg.text()),
+        Cell::Other => None,
+    }
+}
+
+/// The level a neighbour update runs in.
+struct Writer<'a> {
+    level: &'a mut dyn LevelWriteHost,
+}
+
+impl World for Writer<'_> {
+    fn at(&self, pos: [i32; 3]) -> Cell {
+        self.level
+            .block_state(pos)
+            .and_then(|state| self.level.state_string(state))
+            .map_or(Cell::Other, |text| cell(&text))
+    }
+
+    fn put(&mut self, pos: [i32; 3], cell: Cell) {
+        if let Some(id) = cell_text(cell).and_then(|text| self.level.block_state_id(&text)) {
+            self.level.set_block(
+                pos,
+                id,
+                BlockUpdateFlags::NEIGHBORS | BlockUpdateFlags::CLIENTS,
+            );
+        }
+    }
+}
 
 /// A level on the server, read and written through the server host.
 struct Level<'a> {
@@ -42,27 +91,13 @@ impl World for Level<'_> {
         let Some(state) = self.level.block_state(&*self.host, pos) else {
             return Cell::Other;
         };
-        let Some(text) = self.host.block_state_string(state) else {
-            return Cell::Other;
-        };
-        if matches!(
-            text.as_str(),
-            "minecraft:air" | "minecraft:cave_air" | "minecraft:void_air"
-        ) {
-            return Cell::Air;
-        }
-        Seg::parse(&text)
-            .filter(|s| s.block.starts_with("mcwdoors:"))
-            .map_or(Cell::Other, Cell::Garage)
+        self.host
+            .block_state_string(state)
+            .map_or(Cell::Other, |text| cell(&text))
     }
 
     fn put(&mut self, pos: [i32; 3], cell: Cell) {
-        let text = match cell {
-            Cell::Air => "minecraft:air".to_owned(),
-            Cell::Garage(seg) => seg.text(),
-            Cell::Other => return,
-        };
-        if let Some(id) = self.host.block_state_id(&text) {
+        if let Some(id) = cell_text(cell).and_then(|text| self.host.block_state_id(&text)) {
             let _ = self.level.set_block(
                 self.host,
                 pos,
@@ -145,16 +180,38 @@ impl BlockPart for Garage {
         Self::click(host, event.click)
     }
 
-    /// `GarageDoor.neighborChanged`: remember the door for this tick's redstone pass.
-    fn neighbor_changed(
-        &self,
-        _level: &mut dyn mod_api::LevelWriteHost,
-        event: &mut NeighborChangedEvent,
-    ) {
-        enqueue(
-            event.dimension.key().id(),
-            [event.pos.x, event.pos.y, event.pos.z],
+    /// `GarageDoor.neighborChanged`: power at the segment or the block below it opens the door,
+    /// losing it closes the door, and then the segment is written back as it was before with the
+    /// new `powered`, as the original writes it. No sound.
+    fn neighbor_changed(&self, level: &mut dyn LevelWriteHost, event: &mut NeighborChangedEvent) {
+        let pos = [event.pos.x, event.pos.y, event.pos.z];
+        let Some(mut seg) = level.state_string(event.state).and_then(|t| Seg::parse(&t)) else {
+            return;
+        };
+        let signal = |at: [i32; 3]| level.has_neighbor_signal(at).unwrap_or(false);
+        let powered = signal(pos) || signal([pos[0], pos[1] - 1, pos[2]]);
+        if seg.powered == powered {
+            return;
+        }
+        garage::toggle(
+            &mut Writer { level: &mut *level },
+            pos,
+            powered,
+            &seg.facing,
         );
+        seg.powered = powered;
+        if let Some(id) = level.block_state_id(&seg.text()) {
+            level.set_block(
+                pos,
+                id,
+                BlockUpdateFlags::NEIGHBORS | BlockUpdateFlags::CLIENTS,
+            );
+        }
+    }
+
+    /// `GarageDoor.isPathfindable`: no path of any kind goes through a door.
+    fn is_pathfindable(&self, _host: &dyn Host, event: &mut IsPathfindableEvent) {
+        event.pathfindable = false;
     }
 
     /// `GarageDoor.getStateForPlacement`: the default state, turned a quarter clockwise from
@@ -245,70 +302,6 @@ pub fn flip_open(state: &str) -> Option<String> {
     found.then(|| format!("{block}[{}]", props.join(",")))
 }
 
-/// How many positions one level may keep queued: a `/fill` of doors queues one per block.
-const MAX_QUEUED: usize = 8192;
-
-fn queue() -> MutexGuard<'static, BTreeMap<&'static str, BTreeSet<[i32; 3]>>> {
-    static QUEUE: Mutex<BTreeMap<&'static str, BTreeSet<[i32; 3]>>> = Mutex::new(BTreeMap::new());
-    QUEUE
-        .lock()
-        .expect("the garage queue lock is never held across a panic")
-}
-
-fn enqueue(dimension: &'static str, pos: [i32; 3]) {
-    let mut queue = queue();
-    let waiting = queue.entry(dimension).or_default();
-    if waiting.len() < MAX_QUEUED {
-        waiting.insert(pos);
-    }
-}
-
-/// `GarageDoor.neighborChanged` for the level that just ticked: a door whose power changed
-/// opens (powered) or closes, and keeps the new `powered`.
-pub fn on_level_tick_post(host: &mut dyn ServerHost, level: LevelRef) {
-    let Some(dimension) = level.dimension().id(&*host) else {
-        return;
-    };
-    let waiting = queue().remove(dimension).unwrap_or_default();
-    for pos in waiting {
-        let Some(state) = level.block_state(&*host, pos) else {
-            continue;
-        };
-        let Some(seg) = host
-            .block_state_string(state)
-            .and_then(|t| Seg::parse(&t))
-            .filter(|s| s.block.starts_with("mcwdoors:"))
-        else {
-            continue;
-        };
-        let signal = |at: [i32; 3]| level.best_neighbor_signal(&*host, at).unwrap_or(0) > 0;
-        let powered = signal(pos) || signal([pos[0], pos[1] - 1, pos[2]]);
-        if seg.powered == powered {
-            continue;
-        }
-        garage::toggle(&mut Level { host, level }, pos, powered, &seg.facing);
-        let Some(state) = level.block_state(&*host, pos) else {
-            continue;
-        };
-        let Some(mut seg) = host
-            .block_state_string(state)
-            .and_then(|t| Seg::parse(&t))
-            .filter(|s| s.block.starts_with("mcwdoors:"))
-        else {
-            continue;
-        };
-        seg.powered = powered;
-        if let Some(id) = host.block_state_id(&seg.text()) {
-            let _ = level.set_block(
-                host,
-                pos,
-                id,
-                BlockUpdateFlags::NEIGHBORS | BlockUpdateFlags::CLIENTS,
-            );
-        }
-    }
-}
-
 /// Attach the parts to the blocks the package declares.
 pub fn declare(r: &mut dyn Registrar) {
     for name in names::GARAGE {
@@ -329,12 +322,6 @@ struct Mod;
 impl Hooks for Mod {
     fn register(&self, r: &mut dyn Registrar, _: &RegistrationContext) {
         declare(r);
-    }
-
-    fn level_tick_post(&self, host: HostSide<'_>, event: &mut LevelTickPostEvent) {
-        if let HostSide::Server(host) = host {
-            on_level_tick_post(host, event.level);
-        }
     }
 }
 

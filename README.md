@@ -15,9 +15,8 @@ A port of [Macaw's Doors](https://github.com/sketchmacaw/MacawsDoors) by Sketch 
 
 ## Differences from the original
 
-- Redstone power moves a garage door one tick late, and a Japanese or stable door opened by redstone or an explosion plays the ordinary door sound, not the shoji one.
+- A Japanese or stable door opened by redstone or an explosion plays the ordinary door sound, not the shoji one.
 - The stable doors' shapes are trimmed to the block's edge (the original overhangs by 0.02 of a pixel).
-- Garage doors and portcullises are not blocked for mobs' pathfinding.
 
 ## Building
 
