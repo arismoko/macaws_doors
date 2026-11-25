@@ -1,7 +1,7 @@
 # Macaw's Doors for Sunrise: content in data/ and assets/, with a native part in src/.
 id = "mcwdoors"
 name = "Macaw's Doors"
-version = "0.3.3"
+version = "0.3.4"
 description = "239 doors in every wood and in glass, metal and themed styles, with door prints."
 authors = ["Sketch Macaw", "Peachy Macaw", "arismoko"]
 license = "MIT"
