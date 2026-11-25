@@ -17,10 +17,10 @@ pub mod names;
 
 use garage::{Cell, Seg, World};
 use mod_api::{
-    self, BlockPart, BlockUpdateFlags, Hooks, Host, InteractionResult, IsPathfindableEvent,
-    ItemKey, ItemStack, LevelRef, LevelSide, LevelWriteHost, NeighborChangedEvent,
-    OnDestroyedByPlayerEvent, Registrar, RegistrationContext, ServerHost, SoundSource,
-    UseItemOnEvent, UseWithoutItemEvent,
+    self, BlockPart, BlockUpdateFlags, Hooks, Host, HostSide, InteractionResult,
+    IsPathfindableEvent, ItemKey, ItemStack, LevelRef, LevelSide, LevelWriteHost,
+    NeighborChangedEvent, OnDestroyedByPlayerEvent, Registrar, RegistrationContext, ServerHost,
+    SoundSource, UseItemOnEvent, UseWithoutItemEvent,
 };
 
 const MOD: &str = "mcwdoors";
@@ -160,7 +160,7 @@ impl Garage {
 impl BlockPart for Garage {
     fn use_item_on(
         &self,
-        _host: &mut dyn ServerHost,
+        _host: HostSide<'_>,
         event: &mut UseItemOnEvent<'_>,
     ) -> Option<InteractionResult> {
         let click = event.click;
@@ -174,9 +174,13 @@ impl BlockPart for Garage {
 
     fn use_without_item(
         &self,
-        host: &mut dyn ServerHost,
+        host: HostSide<'_>,
         event: &mut UseWithoutItemEvent<'_>,
     ) -> Option<InteractionResult> {
+        // The client lets the template predict; only the server moves the door.
+        let HostSide::Server(host) = host else {
+            return None;
+        };
         Self::click(host, event.click)
     }
 
@@ -274,9 +278,12 @@ pub struct Shoji;
 impl BlockPart for Shoji {
     fn use_without_item(
         &self,
-        host: &mut dyn ServerHost,
+        host: HostSide<'_>,
         event: &mut UseWithoutItemEvent<'_>,
     ) -> Option<InteractionResult> {
+        let HostSide::Server(host) = host else {
+            return None;
+        };
         let click = event.click;
         let next = flip_open(&host.block_state_string(event.state)?)?;
         let next = host.block_state_id(&next)?;
