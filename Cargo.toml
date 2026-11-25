@@ -1,6 +1,6 @@
 [package]
 name = "mcwdoors"
-version = "0.3.4"
+version = "0.3.5"
 edition = "2024"
 license = "MIT"
 description = "Macaw's Doors for Sunrise: garage doors and portcullises, shoji sounds"
